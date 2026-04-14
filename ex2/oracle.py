@@ -10,6 +10,7 @@ import os
 import sys
 from dotenv import load_dotenv
 
+
 def load_config() -> dict:
     """
     Loads environment variables from a .env file and retrieves specific
@@ -17,7 +18,7 @@ def load_config() -> dict:
     """
     # Load variables from the .env file into the environment
     load_dotenv()
-    
+
     # Define the specific configuration keys we expect to find
     keys = [
         "MATRIX_MODE",
@@ -26,9 +27,10 @@ def load_config() -> dict:
         "LOG_LEVEL",
         "ZION_ENDPOINT"
     ]
-    
+
     # Create and return a dictionary mapping each key to its current value
     return {key: os.getenv(key) for key in keys}
+
 
 def check_security() -> None:
     """
@@ -44,7 +46,8 @@ def check_security() -> None:
     else:
         print("[WR] Warning: API_KEY is missing or using placeholder")
 
-    # Verify that .env is explicitly excluded in .gitignore to prevent credential leaks
+    # Verify that .env is explicitly excluded in .gitignore to prevent
+    # credential leaks
     gitignore_safe = False
     if os.path.exists(".gitignore"):
         with open(".gitignore", "r") as f:
@@ -60,17 +63,23 @@ def check_security() -> None:
 
     print("[OK] Production overrides available")
 
+
 def display_status(config: dict) -> None:
     """
     Displays the current system status based on the loaded configuration.
-    Uses conditional formatting to translate raw data into user-friendly status messages.
+    Uses conditional formatting to translate raw data into user-friendly
+    status messages.
     """
     print("ORACLE STATUS: Reading the Matrix...")
     print("\nConfiguration loaded:")
     print(f"Mode: {config.get('MATRIX_MODE', 'unknown')}")
 
     # Determine database connection status based on the presence of a URL
-    db_status = "Connected to local instance" if config.get("DATABASE_URL") else "Disconnected"
+    db_status = (
+        "Connected to local instance"
+        if config.get("DATABASE_URL")
+        else "Disconnected"
+    )
     print(f"Database: {db_status}")
 
     # Determine API authentication status based on the presence of a key
@@ -85,13 +94,14 @@ def display_status(config: dict) -> None:
     print(f"Zion Network: {zion_status}")
     print()
 
+
 def main() -> None:
     """
     Main execution flow: loads configuration, validates existence,
     displays the system status, and runs security checks.
     """
     config = load_config()
-    
+
     # Exit gracefully if no environment variables were found at all
     if not any(config.values()):
         print("ERROR: No configuration found. Please check your .env file.")
@@ -100,6 +110,7 @@ def main() -> None:
     display_status(config)
     check_security()
     print("\nThe Oracle sees all configurations.")
+
 
 if __name__ == "__main__":
     main()

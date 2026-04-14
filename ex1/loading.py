@@ -1,11 +1,13 @@
 import sys
 import importlib.metadata
 
+
 def get_version(package_name: str) -> str | None:
     try:
         return importlib.metadata.version(package_name)
     except importlib.metadata.PackageNotFoundError:
         return None
+
 
 def check_dependencies() -> bool:
     pkg_info = {
@@ -34,6 +36,7 @@ def check_dependencies() -> bool:
         return False
     return True
 
+
 def show_environment_info() -> None:
     print("\nEnvironment Information:")
     # Utilisation de sys pour détecter l'environnement virtuel sans importer os
@@ -41,9 +44,13 @@ def show_environment_info() -> None:
         if "pypoetry" in sys.prefix or "virtualenvs" in sys.prefix:
             print("Status: Running in a Poetry-managed environment.")
         else:
-            print("Status: Running in a standard virtual environment (pip/venv).")
+            print(
+                "Status: Running in a standard virtual environment"
+                "(pip/venv)."
+                )
     else:
         print("Status: WARNING - Running in global environment.")
+
 
 def run_analysis() -> None:
     try:
@@ -67,12 +74,14 @@ def run_analysis() -> None:
     except Exception as e:
         print(f"An error occurred during analysis: {e}")
 
+
 def main() -> None:
     """Main execution flow."""
     print("LOADING STATUS: Loading programs...")
     if check_dependencies():
         show_environment_info()
         run_analysis()
+
 
 if __name__ == "__main__":
     main()

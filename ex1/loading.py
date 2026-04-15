@@ -39,7 +39,6 @@ def check_dependencies() -> bool:
 
 def show_environment_info() -> None:
     print("\nEnvironment Information:")
-    # Utilisation de sys pour détecter l'environnement virtuel sans importer os
     if sys.prefix != sys.base_prefix:
         if "pypoetry" in sys.prefix or "virtualenvs" in sys.prefix:
             print("Status: Running in a Poetry-managed environment.")
@@ -76,7 +75,6 @@ def run_analysis() -> None:
 
 
 def main() -> None:
-    """Main execution flow."""
     print("LOADING STATUS: Loading programs...")
     if check_dependencies():
         show_environment_info()
